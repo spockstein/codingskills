@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Analogy Problems</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Number Analogy Problems</h1>
+        <form id="quizForm">
+            <!-- Questions will be generated here by JavaScript -->
+        </form>
+        <button class="btn" onclick="calculateScore()">Submit</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+       const questions = [
+    // First 10 questions (Pattern 1: Doubling)
+    { question: "2 : 4 :: 6 : __", options: ["8", "9", "12", "10"], answer: "12" },
+    { question: "3 : 9 :: 5 : __", options: ["10", "15", "25", "20"], answer: "25" },
+    { question: "4 : 16 :: 8 : __", options: ["16", "32", "64", "48"], answer: "64" },
+    { question: "5 : 25 :: 10 : __", options: ["50", "75", "100", "125"], answer: "100" },
+    { question: "6 : 36 :: 12 : __", options: ["48", "72", "144", "96"], answer: "144" },
+    { question: "7 : 49 :: 14 : __", options: ["63", "98", "196", "147"], answer: "196" },
+    { question: "8 : 64 :: 16 : __", options: ["128", "256", "512", "1024"], answer: "256" },
+    { question: "9 : 81 :: 18 : __", options: ["162", "243", "324", "486"], answer: "324" },
+    { question: "10 : 100 :: 20 : __", options: ["200", "400", "800", "1000"], answer: "400" },
+    { question: "11 : 121 :: 22 : __", options: ["242", "363", "484", "605"], answer: "484" },
+
+    // Next 10 questions (Pattern 2: Multiplication by a factor)
+    { question: "2 : 6 :: 3 : __", options: ["6", "9", "12", "15"], answer: "9" },
+    { question: "4 : 8 :: 5 : __", options: ["10", "15", "20", "25"], answer: "10" },
+    { question: "6 : 18 :: 7 : __", options: ["14", "21", "28", "35"], answer: "21" },
+    { question: "8 : 16 :: 9 : __", options: ["18", "27", "36", "45"], answer: "18" },
+    { question: "10 : 20 :: 11 : __", options: ["22", "33", "44", "55"], answer: "22" },
+    { question: "12 : 36 :: 13 : __", options: ["26", "39", "52", "65"], answer: "39" },
+    { question: "14 : 28 :: 15 : __", options: ["30", "45", "60", "75"], answer: "30" },
+    { question: "16 : 32 :: 17 : __", options: ["34", "51", "68", "85"], answer: "34" },
+    { question: "18 : 54 :: 19 : __", options: ["38", "57", "76", "95"], answer: "57" },
+    { question: "20 : 40 :: 21 : __", options: ["42", "63", "84", "105"], answer: "42" },
+
+    // Next 10 questions (Pattern 3: Squares)
+    { question: "2 : 4 :: 3 : __", options: ["6", "9", "12", "15"], answer: "9" },
+    { question: "4 : 16 :: 5 : __", options: ["10", "15", "20", "25"], answer: "25" },
+    { question: "6 : 36 :: 7 : __", options: ["14", "21", "28", "49"], answer: "49" },
+    { question: "8 : 64 :: 9 : __", options: ["18", "27", "36", "81"], answer: "81" },
+    { question: "10 : 100 :: 11 : __", options: ["22", "33", "44", "121"], answer: "121" },
+    { question: "12 : 144 :: 13 : __", options: ["26", "39", "52", "169"], answer: "169" },
+    { question: "14 : 196 :: 15 : __", options: ["30", "45", "60", "225"], answer: "225" },
+    { question: "16 : 256 :: 17 : __", options: ["34", "51", "68", "289"], answer: "289" },
+    { question: "18 : 324 :: 19 : __", options: ["38", "57", "76", "361"], answer: "361" },
+    { question: "20 : 400 :: 21 : __", options: ["42", "63", "84", "441"], answer: "441" },
+
+    // Next 10 questions (Pattern 4: Doubling)
+    { question: "2 : 4 :: 4 : __", options: ["6", "8", "10", "12"], answer: "8" },
+    { question: "3 : 6 :: 6 : __", options: ["9", "12", "15", "18"], answer: "12" },
+    { question: "4 : 8 :: 8 : __", options: ["12", "16", "20", "24"], answer: "16" },
+    { question: "5 : 10 :: 10 : __", options: ["15", "20", "25", "30"], answer: "20" },
+    { question: "6 : 12 :: 12 : __", options: ["18", "24", "30", "36"], answer: "24" },
+    { question: "7 : 14 :: 14 : __", options: ["21", "28", "35", "42"], answer: "28" },
+    { question: "8 : 16 :: 16 : __", options: ["24", "32", "40", "48"], answer: "32" },
+    { question: "9 : 18 :: 18 : __", options: ["27", "36", "45", "54"], answer: "36" },
+    { question: "10 : 20 :: 20 : __", options: ["30", "40", "50", "60"], answer: "40" },
+    { question: "11 : 22 :: 22 : __", options: ["33", "44", "55", "66"], answer: "44" },
+
+    // Next 10 questions (Pattern 5: Halving)
+    { question: "4 : 2 :: 8 : __", options: ["6", "8", "4", "10"], answer: "4" },
+    { question: "6 : 3 :: 12 : __", options: ["9", "12", "6", "18"], answer: "6" },
+    { question: "8 : 4 :: 16 : __", options: ["10", "8", "6", "4"], answer: "8" },
+    { question: "10 : 5 :: 20 : __", options: ["15", "10", "20", "25"], answer: "10" },
+    { question: "12 : 6 :: 24 : __", options: ["18", "12", "24", "30"], answer: "12" },
+    { question: "14 : 7 :: 28 : __", options: ["21", "14", "28", "35"], answer: "14" },
+    { question: "16 : 8 :: 32 : __", options: ["24", "16", "32", "40"], answer: "16" },
+    { question: "18 : 9 :: 36 : __", options: ["27", "18", "36", "45"], answer: "18" },
+    { question: "20 : 10 :: 40 : __", options: ["30", "20", "40", "50"], answer: "20" },
+    { question: "22 : 11 :: 44 : __", options: ["33", "22", "44", "55"], answer: "22" },
+
+     // Next 10 questions (Pattern 6: Adding a constant)
+     { question: "2 : 5 :: 4 : __", options: ["6", "7", "8", "9"], answer: "7" },
+    { question: "3 : 6 :: 6 : __", options: ["8", "9", "10", "12"], answer: "9" },
+    { question: "4 : 7 :: 8 : __", options: ["10", "11", "12", "14"], answer: "11" },
+    { question: "5 : 8 :: 10 : __", options: ["13", "14", "15", "17"], answer: "14" },
+    { question: "6 : 9 :: 12 : __", options: ["15", "16", "17", "19"], answer: "16" },
+    { question: "7 : 10 :: 14 : __", options: ["17", "18", "19", "21"], answer: "18" },
+    { question: "8 : 11 :: 16 : __", options: ["19", "20", "21", "23"], answer: "20" },
+    { question: "9 : 12 :: 18 : __", options: ["21", "22", "23", "25"], answer: "22" },
+    { question: "10 : 13 :: 20 : __", options: ["23", "24", "25", "27"], answer: "24" },
+    { question: "11 : 14 :: 22 : __", options: ["25", "26", "27", "29"], answer: "26" },
+
+    // Next 10 questions (Pattern 7: Subtracting a constant)
+    { question: "8 : 4 :: 12 : __", options: ["6", "8", "10", "4"], answer: "8" },
+    { question: "10 : 5 :: 15 : __", options: ["10", "7", "12", "5"], answer: "10" },
+    { question: "12 : 6 :: 18 : __", options: ["9", "12", "14", "6"], answer: "12" },
+    { question: "14 : 7 :: 21 : __", options: ["10", "14", "16", "7"], answer: "14" },
+    { question: "16 : 8 :: 24 : __", options: ["11", "16", "18", "8"], answer: "16" },
+    { question: "18 : 9 :: 27 : __", options: ["13", "18", "20", "9"], answer: "18" },
+    { question: "20 : 10 :: 30 : __", options: ["15", "20", "22", "10"], answer: "20" },
+    { question: "22 : 11 :: 33 : __", options: ["17", "22", "24", "11"], answer: "22" },
+    { question: "24 : 12 :: 36 : __", options: ["19", "24", "26", "12"], answer: "24" },
+    { question: "26 : 13 :: 39 : __", options: ["21", "26", "28", "13"], answer: "26" },
+
+    // Next 10 questions (Pattern 8: Division by a factor)
+    { question: "10 : 5 :: 20 : __", options: ["10", "15", "20", "5"], answer: "10" },
+    { question: "12 : 6 :: 24 : __", options: ["8", "12", "6", "4"], answer: "12" },
+    { question: "14 : 7 :: 28 : __", options: ["14", "7", "28", "4"], answer: "14" },
+    { question: "16 : 8 :: 32 : __", options: ["16", "8", "32", "4"], answer: "16" },
+    { question: "18 : 9 :: 36 : __", options: ["18", "9", "36", "4"], answer: "18" },
+    { question: "20 : 10 :: 40 : __", options: ["20", "10", "40", "5"], answer: "20" },
+    { question: "22 : 11 :: 44 : __", options: ["22", "11", "44", "5"], answer: "22" },
+    { question: "24 : 12 :: 48 : __", options: ["24", "12", "48", "6"], answer: "24" },
+    { question: "26 : 13 :: 52 : __", options: ["26", "13", "52", "7"], answer: "26" },
+    { question: "28 : 14 :: 56 : __", options: ["28", "14", "56", "8"], answer: "28" },
+
+    // Next 10 questions (Pattern 9: Squaring and halving)
+    { question: "2 : 1 :: 4 : __", options: ["2", "4", "6", "8"], answer: "2" },
+    { question: "3 : 1.5 :: 6 : __", options: ["2", "3", "6", "9"], answer: "3" },
+    { question: "4 : 2 :: 8 : __", options: ["3", "4", "2", "6"], answer: "4" },
+    { question: "5 : 2.5 :: 10 : __", options: ["3", "4", "5", "2.5"], answer: "5" },
+    { question: "6 : 3 :: 12 : __", options: ["5", "4", "3", "6"], answer: "6" },
+    { question: "7 : 3.5 :: 14 : __", options: ["6", "5", "7", "3.5"], answer: "7" },
+    { question: "8 : 4 :: 16 : __", options: ["8", "6", "4", "10"], answer: "8" },
+    { question: "9 : 4.5 :: 18 : __", options: ["9", "7", "5", "10"], answer: "9" },
+    { question: "10 : 5 :: 20 : __", options: ["10", "8", "6", "12"], answer: "10" },
+    { question: "11 : 5.5 :: 22 : __", options: ["12", "10", "8", "5.5"], answer: "11" }
+];
+
+        function loadQuestions() {
+            const quizForm = document.getElementById('quizForm');
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                const questionTitle = document.createElement('h2');
+                questionTitle.textContent = `${index + 1}. ${q.question}`;
+                questionDiv.appendChild(questionTitle);
+
+                q.options.forEach(option => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `q${index}`;
+                    input.value = option;
+                    label.appendChild(input);
+                    label.append(option);
+                    questionDiv.appendChild(label);
+                });
+                quizForm.appendChild(questionDiv);
+            });
+        }
+
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected && selected.value === q.answer) {
+                    score++;
+                }
+            });
+            const result = document.getElementById('result');
+            result.textContent = `Your score is: ${score} out of ${questions.length}`;
+        }
+
+        loadQuestions();
+    </script>
+</body>
+</html>
