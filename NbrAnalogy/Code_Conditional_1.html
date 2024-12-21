@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditional Decision Making Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .correct {
+            color: green;
+        }
+        .wrong {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Conditional Decision Making Quiz</h1>
+        <form id="quizForm">
+            <!-- Questions will be generated here by JavaScript -->
+        </form>
+        <button class="btn" type="button" onclick="calculateScore()">Submit</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "What will be the output of the following code?\n\nx = 10\nif x > 5:\n    print('x is greater than 5')\nelse:\n    print('x is not greater than 5')", options: ["x is greater than 5", "x is not greater than 5", "x is equal to 5", "No output"], answer: "x is greater than 5" },
+            { question: "Which of the following statements is true about the `if` statement?", options: ["It always executes the code block inside it.", "It executes the code block inside it only if the condition is true.", "It executes the code block inside it only if the condition is false.", "It executes the code block inside it regardless of the condition."], answer: "It executes the code block inside it only if the condition is true." },
+            { question: "What will be the output of the following code?\n\nage = 16\nif age >= 18:\n    print('You are an adult')\nelse:\n    print('You are a minor')", options: ["You are an adult", "You are a minor", "No output", "Syntax error"], answer: "You are a minor" },
+            { question: "Which of the following is the correct syntax for an `if` statement in Python?", options: ["if (condition) { code block }", "if condition: code block", "if (condition): code block", "if condition { code block }"], answer: "if condition: code block" },
+            { question: "What will be the output of the following code?\n\nnum = 7\nif num % 2 == 0:\n    print('Even number')\nelse:\n    print('Odd number')", options: ["Even number", "Odd number", "No output", "Syntax error"], answer: "Odd number" },
+            { question: "Which of the following statements is true about the `else` statement?", options: ["It is executed only if the `if` condition is true.", "It is executed only if the `if` condition is false.", "It is executed regardless of the `if` condition.", "It is executed only if there is no `if` statement."], answer: "It is executed only if the `if` condition is false." },
+            { question: "What will be the output of the following code?\n\nscore = 85\nif score >= 90:\n    print('Grade A')\nelif score >= 80:\n    print('Grade B')\nelse:\n    print('Grade C')", options: ["Grade A", "Grade B", "Grade C", "No output"], answer: "Grade B" },
+            { question: "Which of the following is the correct syntax for an `else` statement in Python?", options: ["else: code block", "else { code block }", "else (code block)", "else: { code block }"], answer: "else: code block" },
+            { question: "What will be the output of the following code?\n\ntemperature = 30\nif temperature > 25:\n    print('It\\'s hot')\nelse:\n    print('It\\'s cold')", options: ["It's hot", "It's cold", "No output", "Syntax error"], answer: "It's hot" },
+            { question: "Which of the following statements is true about the `elif` statement?", options: ["It is used to check multiple conditions.", "It is used to check the final condition.", "It is used to check the first condition.", "It is used to check the last condition."], answer: "It is used to check multiple conditions." }
+        ];
+
+        function loadQuestions() {
+            const quizForm = document.getElementById('quizForm');
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                const questionTitle = document.createElement('h2');
+                questionTitle.textContent = `${index + 1}. ${q.question}`;
+                questionDiv.appendChild(questionTitle);
+
+                q.options.forEach(option => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `q${index}`;
+                    input.value = option;
+                    label.appendChild(input);
+                    label.append(option);
+                    questionDiv.appendChild(label);
+                });
+                quizForm.appendChild(questionDiv);
+            });
+        }
+
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const questionDiv = document.querySelector(`input[name="q${index}"]`).parentElement.parentElement;
+                questionDiv.querySelectorAll('label').forEach(label => {
+                    label.style.color = '';
+                });
+                if (selected) {
+                    if (selected.value === q.answer) {
+                        score++;
+                        selected.parentElement.style.color = 'green';
+                    } else {
+                        selected.parentElement.style.color = 'red';
+                    }
+                }
+                questionDiv.querySelectorAll('input').forEach(input => {
+                    if (input.value === q.answer) {
+                        input.parentElement.style.color = 'green';
+                    }
+                });
+            });
+            const result = document.getElementById('result');
+            result.textContent = `Your score is: ${score} out of ${questions.length}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadQuestions);
+    </script>
+</body>
+</html>
