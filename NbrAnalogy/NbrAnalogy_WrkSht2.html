@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Analogy Problems</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .question input[type="radio"] {
+            margin-right: 10px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Number Analogy Problems</h1>
+        <form id="quizForm">
+            <!-- Questions will be generated here by JavaScript -->
+        </form>
+        <button class="btn" onclick="calculateScore()">Submit</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+       const questions = [
+      
+    // Pattern 1: Cubes
+    { question: "2 : 8 :: 3 : __", options: ["9", "18", "27", "36"], answer: "27" },
+    { question: "4 : 64 :: 5 : __", options: ["100", "125", "150", "200"], answer: "125" },
+    { question: "6 : 216 :: 7 : __", options: ["343", "400", "500", "600"], answer: "343" },
+    { question: "8 : 512 :: 9 : __", options: ["729", "800", "900", "1000"], answer: "729" },
+    { question: "10 : 1000 :: 11 : __", options: ["1210", "1331", "1440", "1500"], answer: "1331" },
+    { question: "12 : 1728 :: 13 : __", options: ["1690", "1800", "2197", "2300"], answer: "2197" },
+    { question: "14 : 2744 :: 15 : __", options: ["3375", "3500", "3600", "4000"], answer: "3375" },
+    { question: "16 : 4096 :: 17 : __", options: ["4913", "5000", "5100", "5200"], answer: "4913" },
+    { question: "18 : 5832 :: 19 : __", options: ["6400", "6859", "7000", "7200"], answer: "6859" },
+    { question: "20 : 8000 :: 21 : __", options: ["9000", "9261", "9500", "9800"], answer: "9261" },
+
+    // Pattern 2: Prime Numbers
+    { question: "2 : 3 :: 5 : __", options: ["7", "9", "11", "13"], answer: "7" },
+    { question: "3 : 5 :: 7 : __", options: ["9", "11", "13", "15"], answer: "11" },
+    { question: "5 : 7 :: 11 : __", options: ["13", "15", "17", "19"], answer: "13" },
+    { question: "7 : 11 :: 13 : __", options: ["15", "17", "19", "21"], answer: "17" },
+    { question: "11 : 13 :: 17 : __", options: ["19", "21", "23", "25"], answer: "19" },
+    { question: "13 : 17 :: 19 : __", options: ["21", "23", "25", "27"], answer: "23" },
+    { question: "17 : 19 :: 23 : __", options: ["25", "27", "29", "31"], answer: "29" },
+    { question: "19 : 23 :: 29 : __", options: ["31", "33", "35", "37"], answer: "31" },
+    { question: "23 : 29 :: 31 : __", options: ["33", "35", "37", "39"], answer: "37" },
+    { question: "29 : 31 :: 37 : __", options: ["39", "41", "43", "45"], answer: "41" },
+
+    // Pattern 3: Fibonacci Sequence
+    { question: "1 : 1 :: 2 : __", options: ["2", "3", "4", "5"], answer: "3" },
+    { question: "1 : 2 :: 3 : __", options: ["4", "5", "6", "7"], answer: "5" },
+    { question: "2 : 3 :: 5 : __", options: ["6", "7", "8", "9"], answer: "8" },
+    { question: "3 : 5 :: 8 : __", options: ["9", "10", "11", "13"], answer: "13" },
+    { question: "5 : 8 :: 13 : __", options: ["14", "15", "16", "21"], answer: "21" },
+    { question: "8 : 13 :: 21 : __", options: ["22", "23", "24", "34"], answer: "34" },
+    { question: "13 : 21 :: 34 : __", options: ["35", "36", "37", "55"], answer: "55" },
+    { question: "21 : 34 :: 55 : __", options: ["56", "57", "58", "89"], answer: "89" },
+    { question: "34 : 55 :: 89 : __", options: ["90", "91", "92", "144"], answer: "144" },
+    { question: "55 : 89 :: 144 : __", options: ["145", "146", "147", "233"], answer: "233" },
+
+    // Pattern 4: Arithmetic Progression
+    { question: "2 : 5 :: 8 : __", options: ["11", "12", "13", "14"], answer: "11" },
+    { question: "3 : 7 :: 11 : __", options: ["15", "16", "17", "18"], answer: "15" },
+    { question: "4 : 9 :: 14 : __", options: ["19", "20", "21", "22"], answer: "19" },
+    { question: "5 : 11 :: 17 : __", options: ["23", "24", "25", "26"], answer: "23" },
+    { question: "6 : 13 :: 20 : __", options: ["27", "28", "29", "30"], answer: "27" },
+    { question: "7 : 15 :: 23 : __", options: ["31", "32", "33", "34"], answer: "31" },
+    { question: "8 : 17 :: 26 : __", options: ["35", "36", "37", "38"], answer: "35" },
+    { question: "9 : 19 :: 29 : __", options: ["39", "40", "41", "42"], answer: "39" },
+    { question: "10 : 21 :: 32 : __", options: ["43", "44", "45", "46"], answer: "43" },
+    { question: "11 : 23 :: 35 : __", options: ["47", "48", "49", "50"], answer: "47" }
+
+    
+];
+
+        function loadQuestions() {
+            const quizForm = document.getElementById('quizForm');
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                const questionTitle = document.createElement('h2');
+                questionTitle.textContent = `${index + 1}. ${q.question}`;
+                questionDiv.appendChild(questionTitle);
+
+                q.options.forEach(option => {
+                    const label = document.createElement('label');
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `q${index}`;
+                    input.value = option;
+                    label.appendChild(input);
+                    label.append(option);
+                    questionDiv.appendChild(label);
+                });
+                quizForm.appendChild(questionDiv);
+            });
+        }
+
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected && selected.value === q.answer) {
+                    score++;
+                }
+            });
+            const result = document.getElementById('result');
+            result.textContent = `Your score is: ${score} out of ${questions.length}`;
+        }
+
+        loadQuestions();
+    </script>
+</body>
+</html>
